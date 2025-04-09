@@ -3,7 +3,7 @@
     <header>
       <ul class="gnb">
         <li>
-          <a href="/"
+          <a href="#yes"
             ><em>Y</em><span><strong>Yes.</strong><br />[ 네 ]</span></a
           >
         </li>

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <!-- yes -->
-    <section id="/" class="yes">
+    <section id="yes" class="yes">
       <canvas ref="canvasRef"></canvas>
       <div class="scroll">
         <span>scroll</span>
