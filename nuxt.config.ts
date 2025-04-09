@@ -1,8 +1,5 @@
 export default defineNuxtConfig({
-  ssr: false, // 클라이언트 사이드 렌더링
-  nitro: {
-    preset: "static",
-  },
+  ssr: true,
   app: {
     head: {
       title: "YoonHR",
