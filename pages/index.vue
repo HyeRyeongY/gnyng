@@ -12,17 +12,13 @@
     <!-- here -->
     <section id="here" class="here">
       <h2>Here.</h2>
-      <div v-if="pending">불러오는 중...</div>
-      <div v-else-if="error">에러 발생</div>
-      <div v-else>
-        <ul>
-          <li v-for="(item, index) in studyList" :key="index">
-            <a :href="item.url" target="_blank">
-              {{ item.properties.title.title[0].plain_text || "제목 없음" }}</a
-            >
-          </li>
-        </ul>
-      </div>
+      <ul>
+        <li v-for="(item, index) in studyList" :key="index">
+          <a :href="item.url" target="_blank">
+            {{ item.properties.title.title[0].plain_text || "제목 없음" }}</a
+          >
+        </li>
+      </ul>
     </section>
     <!-- ready -->
     <section id="ready" class="ready">
