@@ -149,7 +149,7 @@ const config = {
   velocityDamping: 0.85,
   colorMultiplier: 40000,
   saturationMultiplier: 1000,
-  textChangeInterval: 10000,
+  textChangeInterval: 5000,
   rotationForceMultiplier: 0.5,
 };
 
