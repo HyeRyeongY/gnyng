@@ -127,16 +127,18 @@
 </template>
 
 <script setup>
-const { data: notionData, pending, error } = await useFetch("/api/notion");
-const studyList = ref([]);
-onMounted(() => {
-  console.log("data:", notionData.value.results);
-  studyList.value = notionData.value.results.filter(
-    (item) => item.properties.category?.select?.name === "study"
-  );
-});
+import { onMounted, ref, watchEffect } from "vue";
 
-import { onMounted, ref } from "vue";
+const { data: notionData } = await useFetch("/api/notion");
+const studyList = ref([]);
+
+watchEffect(() => {
+  if (notionData.value?.results) {
+    studyList.value = notionData.value.results.filter(
+      (item) => item.properties.category?.select?.name === "study"
+    );
+  }
+});
 
 const canvasRef = ref(null);
 
