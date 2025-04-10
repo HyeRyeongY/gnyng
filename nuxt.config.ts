@@ -1,6 +1,5 @@
 export default defineNuxtConfig({
   ssr: true,
-
   app: {
     head: {
       title: "YHR",
@@ -13,9 +12,8 @@ export default defineNuxtConfig({
       ],
     },
   },
-
+  modules: ["@nuxtjs/tailwindcss"],
   css: ["@/assets/css/reset.scss", "@/assets/css/global.scss"],
-
   runtimeConfig: {
     notionToken: process.env.NOTION_TOKEN,
     notionDatabaseId: process.env.NOTION_DATABASE_ID,

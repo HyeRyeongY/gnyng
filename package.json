@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@notionhq/client": "^2.3.0",
     "@nuxtjs/google-fonts": "^3.2.0",
+    "@nuxtjs/tailwindcss": "^6.13.2",
     "@studio-freight/lenis": "^1.0.42",
     "@types/three": "^0.174.0",
     "gsap": "^3.12.7",

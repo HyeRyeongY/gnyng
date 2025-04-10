@@ -12,11 +12,12 @@
     <!-- here -->
     <section id="here" class="here">
       <h2>Here.</h2>
+
       <ul>
         <li v-for="(item, index) in studyList" :key="index">
-          <a :href="item.url" target="_blank">
-            {{ item.properties.title.title[0].plain_text || "제목 없음" }}</a
-          >
+          <NuxtLink :to="`/study/${item.id}`">
+            {{ item.properties.title.title[0]?.plain_text || "제목 없음" }}
+          </NuxtLink>
         </li>
       </ul>
     </section>
@@ -123,18 +124,16 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, ref, computed, watchEffect } from "vue";
 
-const { data: notionData } = await useFetch("/api/notion");
-const studyList = ref([]);
+const { data: notionData } = await useFetch("/api/notion/notion");
 
-watchEffect(() => {
-  if (notionData.value?.results) {
-    studyList.value = notionData.value.results.filter(
+const studyList = computed(
+  () =>
+    notionData.value?.results?.filter(
       (item) => item.properties.category?.select?.name === "study"
-    );
-  }
-});
+    ) || []
+);
 
 const canvasRef = ref(null);
 

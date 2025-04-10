@@ -31,6 +31,7 @@ header {
   width: 100%;
   height: 50px;
   padding: 10px;
+  backdrop-filter: blur(10px);
 
   .gnb {
     display: flex;
@@ -116,10 +117,25 @@ header {
     max-width: 1400px;
     width: 100%;
     margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
     @media (max-width: 1600px) {
       max-width: 100%;
       width: auto;
       margin: 0 5rem;
+    }
+
+    ul {
+      flex-grow: 1;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      li {
+        text-align: left;
+        font-size: 20px;
+        font-weight: 700;
+      }
     }
   }
 
