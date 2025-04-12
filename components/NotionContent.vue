@@ -1,6 +1,20 @@
 <script setup>
-import { h } from "vue";
+import { h, onMounted } from "vue";
 import { computed } from "vue";
+import Prism from "prismjs";
+
+// Prism 스타일 import
+import "prismjs/themes/prism-tomorrow.css";
+
+// 필요한 언어만 선택 import (원하는 언어만 추가하면 돼)
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-markup";
+import "prismjs/components/prism-css";
+import "prismjs/components/prism-json";
+import "prismjs/components/prism-markdown";
+import "prismjs/components/prism-bash";
 
 const props = defineProps({
   blocks: {
@@ -26,7 +40,6 @@ const renderRichText = (texts) =>
     )
   );
 
-// 리스트 블럭 묶기
 const groupListBlocks = (blocks) => {
   const result = [];
   let i = 0;
@@ -119,9 +132,19 @@ const renderBlock = (block) => {
       ]);
 
     case "code":
-      return h("pre", { class: "bg-gray-100 rounded-md p-4 overflow-x-auto my-4" }, [
-        h("code", null, renderRichText(text)),
-      ]);
+      const code = text.map((t) => t.plain_text).join("");
+      const language = block.code.language || "plaintext";
+      const grammar = Prism.languages[language] || Prism.languages.plaintext;
+      const highlightedCode = Prism.highlight(code, grammar, language);
+
+      return h(
+        "pre",
+        { class: `language-${language} rounded-md my-4 overflow-x-auto` },
+        h("code", {
+          class: `language-${language}`,
+          innerHTML: highlightedCode,
+        })
+      );
 
     case "toggle":
       return h("details", { class: "my-3" }, [
@@ -174,11 +197,20 @@ const renderedBlocks = computed(() => groupListBlocks(props.blocks).map(renderBl
     </div>
   </div>
 </template>
+
 <style lang="scss">
 .notion-contents {
   padding: 100px 0;
   max-width: 710px;
   width: 100%;
   margin: 0 auto;
+}
+
+/* Prism 스타일 추가로 덮어쓰기 가능 */
+pre[class*="language-"] {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: #2d2d2d;
+  color: white;
 }
 </style>

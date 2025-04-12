@@ -5,9 +5,15 @@ export default defineNuxtConfig({
       title: "YHR",
       meta: [{ name: "description", content: "This is yoonhyeryeong's project." }],
       link: [
+        // Funnel Display
         {
           rel: "stylesheet",
           href: "https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap",
+        },
+        // Special Gothic
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Special+Gothic&display=swap",
         },
       ],
     },
