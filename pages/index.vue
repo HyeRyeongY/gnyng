@@ -10,30 +10,43 @@
       </div>
     </section>
     <!-- here -->
-    <section id="here" class="here">
-      <h2>Here.</h2>
+    <div class="inner">
+      <section id="here" class="here">
+        <h2>Here.</h2>
 
-      <ul>
-        <li v-for="(item, index) in studyList" :key="index">
-          <NuxtLink :to="`/study/${item.id}`">
-            {{ item.properties.title.title[0]?.plain_text || "제목 없음" }}
-          </NuxtLink>
-        </li>
-      </ul>
-    </section>
-    <!-- ready -->
-    <section id="ready" class="ready">
-      <h2>Ready.</h2>
-      <h3>Work Experience</h3>
-      <ul class="experience">
-        <li>
-          <strong>티허브 <sub>| 일주지앤에스</sub></strong
-          ><br />
-          <span>web publisher | 2022.03 ~ 현재</span>
-        </li>
-      </ul>
+        <div class="tabs">
+          <button
+            v-for="cat in categories"
+            :key="cat"
+            :class="{ active: cat === selectedCategory }"
+            @click="selectedCategory = cat"
+          >
+            {{ cat }}
+          </button>
+        </div>
 
-      <!-- <h3>Skills</h3>
+        <ul>
+          <li v-for="(item, index) in filteredItems" :key="index">
+            <NuxtLink :to="`/hereDetail/${item.id}`">
+              <span>{{ index + 1 }}</span>
+              {{ item.properties.title.title[0]?.plain_text || "제목 없음" }}
+            </NuxtLink>
+          </li>
+        </ul>
+      </section>
+      <!-- ready -->
+      <section id="ready" class="ready">
+        <h2>Ready.</h2>
+        <h3>Work Experience</h3>
+        <ul class="experience">
+          <li>
+            <strong>티허브 <sub>| 일주지앤에스</sub></strong
+            ><br />
+            <span>web publisher | 2022.03 ~ 현재</span>
+          </li>
+        </ul>
+
+        <!-- <h3>Skills</h3>
       <ul class="skills">
         <li>
           <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -119,21 +132,28 @@
           </p>
         </li>
       </ul> -->
-    </section>
+      </section>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watchEffect } from "vue";
+import { onMounted, ref, computed } from "vue";
 
 const { data: notionData } = await useFetch("/api/notion/notion");
 
-const studyList = computed(
-  () =>
-    notionData.value?.results?.filter(
-      (item) => item.properties.category?.select?.name === "study"
-    ) || []
-);
+const categories = computed(() => {
+  const items = notionData.value?.results || [];
+  const names = items.map((item) => item.properties.category?.select?.name).filter(Boolean); // undefined/null 제거
+  return [...new Set(names)]; // 중복 제거
+});
+
+const selectedCategory = ref("study"); // 기본 탭 선택값
+
+const filteredItems = computed(() => {
+  const items = notionData.value?.results || [];
+  return items.filter((item) => item.properties.category?.select?.name === selectedCategory.value);
+});
 
 const canvasRef = ref(null);
 
