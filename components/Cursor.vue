@@ -6,36 +6,37 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, nextTick } from "vue";
 import gsap from "gsap";
-
 onMounted(() => {
-  const cursorDot = document.querySelector(".cursor-dot");
-  const cursorOutline = document.querySelector(".cursor-outline");
+  nextTick(() => {
+    const cursorDot = document.querySelector(".cursor-dot");
+    const cursorOutline = document.querySelector(".cursor-outline");
 
-  // 마우스 좌표 저장
-  let mouseX = 0,
-    mouseY = 0;
+    let mouseX = 0,
+      mouseY = 0;
 
-  // 마우스 이동 이벤트
-  document.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
 
-    // 작은 원은 즉시 이동
-    gsap.to(cursorDot, { x: mouseX, y: mouseY, duration: 0 });
-
-    // 큰 원은 부드럽게 이동
-    gsap.to(cursorOutline, { x: mouseX, y: mouseY, duration: 0.3, ease: "power2.out" });
-  });
-
-  // hover 효과 (버튼이나 링크 위에서 커짐)
-  document.querySelectorAll("a, button").forEach((el) => {
-    el.addEventListener("mouseenter", () => {
-      gsap.to(cursorOutline, { scale: 1.8, duration: 0.3, ease: "power2.out" });
+      gsap.to(cursorDot, { x: mouseX, y: mouseY, duration: 0 });
+      gsap.to(cursorOutline, { x: mouseX, y: mouseY, duration: 0.3, ease: "power2.out" });
     });
-    el.addEventListener("mouseleave", () => {
-      gsap.to(cursorOutline, { scale: 1, duration: 0.3, ease: "power2.out" });
+
+    // ✅ 전역 hover 감지
+    document.addEventListener("mouseover", (e) => {
+      const isHoverTarget = e.target.closest("a, button, summary");
+      if (isHoverTarget) {
+        gsap.to(cursorOutline, { scale: 1.8, duration: 0.3, ease: "power2.out" });
+      }
+    });
+
+    document.addEventListener("mouseout", (e) => {
+      const isHoverTarget = e.target.closest("a, button, summary");
+      if (isHoverTarget) {
+        gsap.to(cursorOutline, { scale: 1, duration: 0.3, ease: "power2.out" });
+      }
     });
   });
 });
@@ -56,6 +57,7 @@ body {
   height: 100vh;
   pointer-events: none;
   z-index: 9999;
+  mix-blend-mode: difference;
 }
 
 /* 작은 원 (즉시 따라가는 점) */

@@ -28,15 +28,17 @@
       <p>© 2025 yoonhyeryeong</p>
       <!-- 네, 여기 있습니다. 준비됐습니다. -->
     </footer>
+
+    <Cursor v-if="isMouse" />
   </div>
 </template>
-<script setup lang="ts">
+<script setup>
 import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
 
-function navigateToAnchor(anchorId: string) {
+function navigateToAnchor(anchorId) {
   const targetPath = "/";
   const hash = `#${anchorId}`;
 
@@ -49,4 +51,13 @@ function navigateToAnchor(anchorId: string) {
     }
   }
 }
+
+import Cursor from "@/components/Cursor.vue";
+
+import { onMounted, ref } from "vue";
+const isMouse = ref(false);
+
+onMounted(() => {
+  isMouse.value = window.matchMedia("(hover: hover)").matches;
+});
 </script>
